@@ -5,7 +5,7 @@ namespace DailerApp.Services
 {
     public interface ITraitService
     {
-        Trait CreateTrait(string title, string desc);
+        void CreateTrait(string title, string desc);
         void AddTraitToDb(Trait trait);
         Trait GetTraitById(int id);
         void DeleteTrait(Trait trait);

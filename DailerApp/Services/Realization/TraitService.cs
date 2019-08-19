@@ -18,10 +18,11 @@ namespace DailerApp.Services
             //
         }
 
-        public Trait CreateTrait(string title, string desc)
+        public void CreateTrait(string title, string desc)
         {
-            Console.WriteLine(_dbWriter.GetType());
-            return new Trait() { Title = title, Description = desc }; 
+            _dbWriter.WriteToDb(
+                new Trait() { Title = title, Description = desc } 
+            );
         }
 
         public void DeleteTrait(Trait trait)

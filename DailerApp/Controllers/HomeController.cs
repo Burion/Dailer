@@ -18,7 +18,7 @@ namespace DailerApp.Controllers
         }
         public IActionResult Index()
         {
-            var trait = _traitService.CreateTrait("Family", "Take care of it");
+            _traitService.CreateTrait("Friends", "Spend time with them");
             //_traitService.AddTraitToDb(trait);
             // string result = string.Join(
             //     "\n",
