@@ -17,6 +17,7 @@ namespace DailerApp.Services
         public void WriteToDb(T item)
         {
             dbSet.Add(item);
+            _db.SaveChanges();
             Console.WriteLine($"Written type was: {typeof(T)}");
         }
     }
