@@ -38,6 +38,7 @@ namespace DailerApp
             });
             services.AddScoped<ITraitService, TraitService>();
             services.AddScoped(typeof(IDbWriter<>), typeof(DbWriter<>));
+            services.AddScoped(typeof(IDbReader<>), typeof(DbReader<>));
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));

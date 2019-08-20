@@ -11,5 +11,6 @@ namespace DailerApp.Services
         void DeleteTrait(Trait trait);
         void DeleteTrait(int id);
         List<Trait> GetAllTraits();
+        int GetTraitCount();
     }
 }

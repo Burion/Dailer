@@ -9,9 +9,11 @@ namespace DailerApp.Services
     public class TraitService : ITraitService
     {
         readonly IDbWriter<Trait> _dbWriter;
-        public TraitService(IDbWriter<Trait> dbWriter)
+        readonly IDbReader<Trait> _dbReader;
+        public TraitService(IDbWriter<Trait> dbWriter, IDbReader<Trait> dbReader)
         {
             _dbWriter = dbWriter;
+            _dbReader = dbReader;
         }
         public void AddTraitToDb(Trait trait)
         {
@@ -32,7 +34,10 @@ namespace DailerApp.Services
             //     _db.Traits.Single(t => t.Id == trait.Id)
             // );
         }
-
+        public int GetTraitCount()
+        {
+            return _dbReader.GetRowsCount();
+        }
         public void DeleteTrait(int id)
         {
             // _db.Traits.Remove(
