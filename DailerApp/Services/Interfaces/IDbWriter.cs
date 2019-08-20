@@ -3,7 +3,7 @@ using DailerApp.Data;
 
 namespace DailerApp.Services
 {
-    public interface IDbWriter<T>: IDbHendler where T: class
+    public interface IDbWriter<T>: IDbHendler<T> where T: class
     {
         void WriteToDb(T item);
     }

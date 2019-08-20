@@ -4,12 +4,14 @@ using DailerApp.Services;
 using System.Linq;
 using DailerApp.Models;
 using DailerApp.Exceptions;
+using Microsoft.EntityFrameworkCore;
+
 namespace DailerApp.Services
 {
     public class DbWriter<T>:  IDbWriter<T> where T: class
     {
         public ApplicationDbContext _db { get; }
-        readonly Microsoft.EntityFrameworkCore.DbSet<T> dbSet;
+        public DbSet<T> dbSet { get; }
 
         public DbWriter(ApplicationDbContext db)
         {
@@ -19,6 +21,7 @@ namespace DailerApp.Services
             {
                 throw new NoSuchTypeInDbContextException(typeof(T));
             }
+            
         }
         public void WriteToDb(T item)
         {
