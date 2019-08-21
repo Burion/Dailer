@@ -2,7 +2,7 @@ using System;
 
 namespace DailerApp.Models
 {
-    public class Mark
+    public class Mark: IEntityModel
     {
         public int Id { get; set; }
         public DailerUser User { get; set; }
