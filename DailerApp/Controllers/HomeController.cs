@@ -18,7 +18,6 @@ namespace DailerApp.Controllers
         }
         public IActionResult Index()
         {
-            _traitService.CreateTrait("Friends", "Spend time with them");
             var traits = _traitService.GetAllTraits();
             string x = String.Join("\n", traits.Select(t => $"{t.Title} - {t.Description}"));
             return Content(x);
