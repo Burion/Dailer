@@ -56,5 +56,10 @@ namespace DailerApp.Services
             throw new NotImplementedException();
             // return _db.Traits.Single(t => t.Id == id);
         }
+
+        public void DeleteAllTraits()
+        {
+            _dbWriter.DeleteAllFromDb();
+        }
     }
 }

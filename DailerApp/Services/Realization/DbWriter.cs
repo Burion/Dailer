@@ -14,6 +14,22 @@ namespace DailerApp.Services
         {
                
         }
+
+        public void DeleteAllFromDb()
+        {
+            foreach(var item in dbSet)
+            {
+                dbSet.Remove(item);
+            }
+            _db.SaveChanges();
+        }
+
+        public void DeleteFromDb(T item)
+        {
+            dbSet.Remove(item);
+            _db.SaveChanges();
+        }
+
         public void WriteToDb(T item)
         {
             dbSet.Add(item);

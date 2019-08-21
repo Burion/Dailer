@@ -10,6 +10,16 @@ namespace DailerApp.Services
 
         public DbSet<T> dbSet => throw new NotImplementedException();
 
+        public void DeleteAllFromDb()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteFromDb(T item)
+        {
+            throw new NotImplementedException();
+        }
+
         public void WriteToDb(T item)
         {
             Console.WriteLine($"Written type was: {typeof(T)}");
