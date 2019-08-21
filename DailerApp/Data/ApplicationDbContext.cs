@@ -11,6 +11,7 @@ namespace DailerApp.Data
     {
 
         public DbSet<Trait> Traits {get; set;}
+        public DbSet<Mark> Marks {get; set;}
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
