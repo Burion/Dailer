@@ -2,7 +2,7 @@ using System;
 
 namespace DailerApp.Models
 {
-    public class Trait
+    public class Trait: IEntityModel
     {
         public int Id { get; set; }
         public string Title { get; set; }

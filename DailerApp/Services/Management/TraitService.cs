@@ -47,8 +47,7 @@ namespace DailerApp.Services
 
         public List<Trait> GetAllTraits()
         {
-            throw new NotImplementedException();
-            // return _db.Traits.ToList();
+            return _dbReader.GetAllItems();
         }
 
         public Trait GetTraitById(int id)
