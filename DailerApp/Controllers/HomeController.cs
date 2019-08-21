@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DailerApp.Models;
 using DailerApp.Services;
-
+using DailerApp.ViewModels;
 namespace DailerApp.Controllers
 {
     public class HomeController : Controller
@@ -20,7 +20,8 @@ namespace DailerApp.Controllers
         {
             var traits = _traitService.GetAllTraits();
             string x = String.Join("\n", traits.Select(t => $"{t.Title} - {t.Description}"));
-            return Content(x);
+            ViewData.Model = new IndexModel() { Title = "Hello! I am from controller" };
+            return View();
         }
 
         
