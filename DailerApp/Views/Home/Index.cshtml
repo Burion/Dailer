@@ -7,10 +7,12 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
 <canvas id="marksChart" width="300" height="200"></canvas>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
 <script language=javascript type="text/javascript">
+function radialChart(){
   $.ajax(
     {
         type: "GET",
@@ -19,8 +21,11 @@
             printChart(response);
     }
     });
+    }
 </script>
-
+<script>
+    radialChart();
+</script>
 <script>
     function printChart(_lb)
     {
@@ -49,7 +54,44 @@
         var radarChart = new Chart(marksCanvas, {
         type: 'radar',
         data: marksData
-        });    
+        });
     }
 </script>
+
+<script>
+    function setMark()
+    {
+       $.ajax(
+        {
+        type: "POST",
+        url: '/setmark/' + 4,
+        success: function(response)
+        {
+            alert(response);
+        }
+    }); 
+    }
+    
+</script>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#butt').click(function () {
+                $.ajax(
+                {
+                type: "POST",
+                url: '/setmark/' + 4,
+                success: function(response)
+                {
+                    radialChart();
+                }
+                }); 
+            });
+        });
+</script>
+
+<fieldset>
+     <input type="button" value="Demo 1" id="butt" />
+</fieldset>
 

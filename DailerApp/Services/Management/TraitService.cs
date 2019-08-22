@@ -52,8 +52,7 @@ namespace DailerApp.Services
 
         public Trait GetTraitById(int id)
         {
-            throw new NotImplementedException();
-            // return _db.Traits.Single(t => t.Id == id);
+            return _dbReader.GetById(id);
         }
 
         public void DeleteAllTraits()

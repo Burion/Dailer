@@ -26,10 +26,12 @@ namespace DailerApp.Controllers
     {
         readonly ITraitService _traitService;
         readonly IMarkManager _markManager;
-        public HomeController(ITraitService traitService, IMarkManager markManager)
+        readonly Random _random;
+        public HomeController(ITraitService traitService, IMarkManager markManager, Random random)
         {
             _traitService = traitService;
             _markManager = markManager;
+            _random = random;
         }
         public IActionResult Index()
         {
@@ -40,18 +42,30 @@ namespace DailerApp.Controllers
         public IActionResult GetString()
         {
             var traits = _traitService.GetAllTraits();
-            var labels = traits.Select(t => t.Title).ToArray();
+            var labels = traits.Select(t => t.Title).OrderBy(title => title).ToArray();
             string[][] responce = new string[3][];
             responce[0] = labels;
-            responce[1] = new string[] {"43","34","34", "84", "24", "31", "37", "44" };
-            responce[2] = new string[] {"43","24","84", "31", "37", "44", "34","34" };
+            
+            var thisMonthMarks = _markManager.GetAllMarks()
+            .GroupBy(m => m.Trait)
+            .OrderBy(group => group.Key.Title)
+            .Select(g => g.Sum(mark => mark.Value).ToString()).ToArray();
+
+
+            responce[1] = thisMonthMarks;
+            responce[2] = thisMonthMarks;
             return new JsonResult(responce);
         }
-
-        public IActionResult SetMark(int traitId)
+        [Route("setmark/{mark}")]
+        public IActionResult SetMark(string mark)
         {
-            
-            return Ok();
+
+            int traitId = _random.Next(1, 5);
+            _markManager.CreateMarkForCurrentUser(
+                _traitService.GetTraitById(traitId),
+                int.Parse(mark)
+            );
+            return new JsonResult("Mark was created");
         }
         public IActionResult Privacy()
         {
