@@ -6,7 +6,8 @@ namespace DailerApp.Services
 {
     public interface IMarkManager
     {
-        void CreateMark(DailerUser user, Trait trait);
+        void CreateMark(DailerUser user, Trait trait, int mark);
+        void CreateMarkForCurrentUser(Trait trait, int mark);
         void DeleteMark(Mark mark);
         void DeleteAllMarks();
         Mark GetMark(int id);

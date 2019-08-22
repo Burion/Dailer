@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DailerApp.Models;
 using DailerApp.Services;
 
+
 namespace DailerApp
 {
     public class Startup
@@ -36,6 +37,7 @@ namespace DailerApp
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ITraitService, TraitService>();
             services.AddScoped<IMarkManager, MarkManager>();
             services.AddScoped(typeof(IDbWriter<>), typeof(DbWriter<>));
@@ -48,6 +50,7 @@ namespace DailerApp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
             services.AddSession();
         }
 
