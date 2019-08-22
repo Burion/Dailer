@@ -7,8 +7,10 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<div class="container" style="height: 100px, width: 150px">
+<canvas id="marksChart" width="150" height="100"></canvas>
+</div>
 
-<canvas id="marksChart" width="300" height="200"></canvas>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
 <script language=javascript type="text/javascript">
@@ -44,10 +46,6 @@ function radialChart(){
             label: "January",
             backgroundColor: "rgba(200,0,0,0.2)",
             data: data1
-        }, {
-            label: "February",
-            backgroundColor: "rgba(0,0,200,0.2)",
-            data: data2
         }]
         };
 

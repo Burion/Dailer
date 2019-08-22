@@ -41,19 +41,32 @@ namespace DailerApp.Controllers
         [Route("getstring")]
         public IActionResult GetString()
         {
-            var traits = _traitService.GetAllTraits();
-            var labels = traits.Select(t => t.Title).OrderBy(title => title).ToArray();
-            string[][] responce = new string[3][];
-            responce[0] = labels;
+            string[][] responce = new string[3][];            
             
-            var thisMonthMarks = _markManager.GetAllMarks()
-            .GroupBy(m => m.Trait)
-            .OrderBy(group => group.Key.Title)
-            .Select(g => g.Sum(mark => mark.Value).ToString()).ToArray();
+            // var thisMonthMarks = _markManager.GetAllMarks()
+            // .GroupBy(m => m.Trait)
+            // .OrderBy(group => group.Key.Title)
+            // .Select(g => g.Sum(mark => mark.Value).ToString()).ToArray();
 
+            var _thisMonthMarks = _traitService.GetAllTraits().GroupJoin(
+                _markManager.GetAllMarks(),
+                t => t,
+                m => m.Trait,
+                (trait, mrks) => new
+                {
+                    Label = trait.Title,
+                    Marks = mrks.Select(m => m.Value)
+                })
+                .Select(tmrks => new { 
+                    Label = tmrks.Label, 
+                    Mark = tmrks.Marks.DefaultIfEmpty(0)
+                    .Sum()
+                    })
+                .OrderBy(v => v.Label).ToArray();
 
-            responce[1] = thisMonthMarks;
-            responce[2] = thisMonthMarks;
+            responce[0] = _thisMonthMarks.Select(m => m.Label).ToArray();
+            responce[1] = _thisMonthMarks.Select(m => m.Mark.ToString()).ToArray();
+            responce[2] = _thisMonthMarks.Select(m => m.Mark.ToString()).ToArray();
             return new JsonResult(responce);
         }
         [Route("setmark/{mark}")]
