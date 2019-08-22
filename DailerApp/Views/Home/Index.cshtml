@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +7,49 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<canvas id="marksChart" width="300" height="200"></canvas>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+<script language=javascript type="text/javascript">
+  $.ajax(
+    {
+        type: "GET",
+        url: '/getstring',
+        success: function (response) {
+            printChart(response);
+    }
+    });
+</script>
+
+<script>
+    function printChart(_lb)
+    {
+        var marksCanvas = document.getElementById("marksChart");
+        var data1 = _lb[1].map(function(item) {
+        return parseInt(item, 10);
+        });
+        var data2 = _lb[2].map(function(item) {
+        return parseInt(item, 10);
+        });
+        var marksData = {
+        labels: _lb[0],
+        
+
+        datasets: [{
+            label: "January",
+            backgroundColor: "rgba(200,0,0,0.2)",
+            data: data1
+        }, {
+            label: "February",
+            backgroundColor: "rgba(0,0,200,0.2)",
+            data: data2
+        }]
+        };
+
+        var radarChart = new Chart(marksCanvas, {
+        type: 'radar',
+        data: marksData
+        });    
+    }
+</script>
+
