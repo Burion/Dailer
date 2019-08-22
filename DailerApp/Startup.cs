@@ -37,6 +37,7 @@ namespace DailerApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddScoped<ITraitService, TraitService>();
+            services.AddScoped<IMarkManager, MarkManager>();
             services.AddScoped(typeof(IDbWriter<>), typeof(DbWriter<>));
             services.AddScoped(typeof(IDbReader<>), typeof(DbReader<>));
             services.AddDbContext<ApplicationDbContext>(options =>

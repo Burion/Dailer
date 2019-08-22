@@ -25,9 +25,11 @@ namespace DailerApp.Controllers
     public class HomeController : Controller
     {
         readonly ITraitService _traitService;
-        public HomeController(ITraitService traitService)
+        readonly IMarkManager _markManager;
+        public HomeController(ITraitService traitService, IMarkManager markManager)
         {
             _traitService = traitService;
+            _markManager = markManager;
         }
         public IActionResult Index()
         {
@@ -44,6 +46,12 @@ namespace DailerApp.Controllers
             responce[1] = new string[] {"43","34","34", "84", "24", "31", "37", "44" };
             responce[2] = new string[] {"43","24","84", "31", "37", "44", "34","34" };
             return new JsonResult(responce);
+        }
+
+        public IActionResult SetMark(int traitId)
+        {
+            
+            return Ok();
         }
         public IActionResult Privacy()
         {
