@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DailerApp.Models;
 using DailerApp.Services;
-using DailerApp.ViewModels;
+
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Http;
@@ -35,19 +35,18 @@ namespace DailerApp.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var Model = new IndexModel()
+            {
+                Title = "Hello",
+                Labels = _traitService.GetAllTraits().Select(t => t.Title).ToList()
+            };
+            return View(Model);
         }
 
         [Route("getstring")]
         public IActionResult GetString()
         {
             string[][] responce = new string[3][];            
-            
-            // var thisMonthMarks = _markManager.GetAllMarks()
-            // .GroupBy(m => m.Trait)
-            // .OrderBy(group => group.Key.Title)
-            // .Select(g => g.Sum(mark => mark.Value).ToString()).ToArray();
-
             var _thisMonthMarks = _traitService.GetAllTraits().GroupJoin(
                 _markManager.GetAllMarks(),
                 t => t,

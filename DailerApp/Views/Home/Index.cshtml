@@ -1,4 +1,5 @@
-﻿
+﻿@using DailerApp.Models;
+@model DailerApp.Models.IndexModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,8 +7,8 @@
     <link rel="stylesheet" type="text/css" href = "css/site.css">
 </head>
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>Welcome back, @Model.Title</h1>
+    
 </div>
 
 <div class="container" style="display: flex; flex-direction: row" >
@@ -15,8 +16,11 @@
         <canvas id="marksChart"></canvas>
     </div>
 
-    <div style="width: 150px; height: 150px">
-
+    <div style="display: flex; flex-direction: column; border: 1px solid black; border-radius: 15px;">
+        @foreach(var label in Model.Labels)
+        {
+            <div style="margin: 10px">@label</div>
+        }
     </div>
 </div>
 
@@ -49,7 +53,7 @@ function radialChart(){
         var data1 = _lb[1].map(function(item) {
         return parseInt(item, 10);
         });
-        alert(data1);
+        
         var data2 = _lb[2].map(function(item) {
         return parseInt(item, 10);
         });
