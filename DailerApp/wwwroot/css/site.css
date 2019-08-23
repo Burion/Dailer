@@ -6,7 +6,10 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
-
+canvas {
+  height:150%;
+  width: 150%
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
