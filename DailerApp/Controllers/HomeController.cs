@@ -38,7 +38,7 @@ namespace DailerApp.Controllers
             var Model = new IndexModel()
             {
                 Title = "Hello",
-                Labels = _traitService.GetAllTraits().Select(t => t.Title).ToList()
+                Traits = _traitService.GetAllTraits().ToList()
             };
             return View(Model);
         }
@@ -68,16 +68,22 @@ namespace DailerApp.Controllers
             responce[2] = _thisMonthMarks.Select(m => m.Mark.ToString()).ToArray();
             return new JsonResult(responce);
         }
-        [Route("setmark/{mark}")]
-        public IActionResult SetMark(string mark)
+        [Route("setmark/{trait}/{mark}")]
+        public IActionResult SetMark(string trait, string mark)
         {
 
-            int traitId = _random.Next(1, 5);
+            int traitId = int.Parse(trait);
             _markManager.CreateMarkForCurrentUser(
                 _traitService.GetTraitById(traitId),
                 int.Parse(mark)
             );
             return new JsonResult("Mark was created");
+        }
+
+        public IActionResult ClearMarks()
+        {
+            _markManager.DeleteAllMarks();
+            return Ok();
         }
         public IActionResult Privacy()
         {

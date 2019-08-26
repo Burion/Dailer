@@ -7,7 +7,7 @@ namespace DailerApp.Models
     public class IndexModel 
     {
         public string Title {get; set;}
-        public List<string> Labels { get; set; }
+        public List<Trait> Traits { get; set; }
         public int[] Data {get; set;} 
     }
 }

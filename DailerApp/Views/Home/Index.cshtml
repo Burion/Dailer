@@ -11,17 +11,28 @@
     
 </div>
 
-<div class="container" style="display: flex; flex-direction: row" >
+<div class="container" >
     <div>
         <canvas id="marksChart"></canvas>
     </div>
-
+    
     <div style="display: flex; flex-direction: column; border: 1px solid black; border-radius: 15px;">
-        @foreach(var label in Model.Labels)
+        @foreach(var trait in Model.Traits)
         {
-            <div style="margin: 10px">@label</div>
+            
+            <div class="container">
+            <div style="width: 100%"><p>@trait.Title</p></div>
+
+            <div class="container">
+                @for(int x = 1; x <= 5; x++)
+                {
+                <p onclick="setMark(@trait.Id, @x), updateChart()">☆</p>
+                }
+                </div>
+            <!--"★" : "☆"-->
+            </div>
         }
-    </div>
+        </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -77,23 +88,27 @@ function radialChart(){
 
 <script>
     function updateChart(){
-        for(i = 0; i < 8; i++){
-            radarChart.data.datasets[0].data[i] += 5;
+        $.ajax(
+        {
+        type: "GET",
+        url: '/getstring',
+        success: function (response) {
+            var _data = response[1].map(function(item) {
+            return parseInt(item, 10);
+        });
+        radarChart.data.datasets[0].data = _data;
         }
+        });
         radarChart.update();
     }
 </script>
 <script>
-    function setMark()
+    function setMark(trait, mark)
     {
        $.ajax(
         {
         type: "POST",
-        url: '/setmark/' + 4,
-        success: function(response)
-        {
-            alert(response);
-        }
+        url: '/setmark/' + trait + "/" + mark
     }); 
     }
     
