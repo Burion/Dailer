@@ -77,9 +77,10 @@ namespace DailerApp.Controllers
                 _traitService.GetTraitById(traitId),
                 int.Parse(mark)
             );
-            return new JsonResult("Mark was created");
+            
+            return GetString();
         }
-
+        [Route("clearmarks")]
         public IActionResult ClearMarks()
         {
             _markManager.DeleteAllMarks();

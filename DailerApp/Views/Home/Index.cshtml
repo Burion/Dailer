@@ -26,7 +26,7 @@
             <div class="container">
                 @for(int x = 1; x <= 5; x++)
                 {
-                <p onclick="setMark(@trait.Id, @x), updateChart()">☆</p>
+                <p onclick="setMark(@trait.Id, @x)">☆</p>
                 }
                 </div>
             <!--"★" : "☆"-->
@@ -79,8 +79,16 @@ function radialChart(){
 
         radarChart = new Chart(marksCanvas, {
         type: 'radar',
-        data: marksData
+        data: marksData,
+        options:{
+            scale:{
+                ticks:{
+                    min: 0
+                }
+            }
+        }
         });
+        
 
         
     }
@@ -108,7 +116,21 @@ function radialChart(){
        $.ajax(
         {
         type: "POST",
-        url: '/setmark/' + trait + "/" + mark
+        url: '/setmark/' + trait + "/" + mark, 
+        success: function(response){
+            $.ajax(
+                    {
+                    type: "GET",
+                    url: '/getstring',
+                    success: function (response) {
+                        var _data = response[1].map(function(item) {
+                        return parseInt(item, 10);
+                    });
+                    radarChart.data.datasets[0].data = _data;
+                    radarChart.update();
+                    }
+                    });
+        }
     }); 
     }
     
@@ -121,15 +143,31 @@ function radialChart(){
                 $.ajax(
                 {
                 type: "POST",
-                url: '/setmark/' + 4,
+                url: '/setmark/' + 4 + "/" + 1,
                 success: function(response)
                 {
-                    
-                    updateChart();
+                    $.ajax(
+                    {
+                    type: "GET",
+                    url: '/getstring',
+                    success: function (response) {
+                        var _data = response[1].map(function(item) {
+                        return parseInt(item, 10);
+                    });
+                    radarChart.data.datasets[0].data = _data;
+                    radarChart.update();
+                    }
+                    });
                 }
                 }); 
             });
         });
+</script>
+<script>
+    function setMarkAndUpdate(trait, mark){
+        setMark(trait, mark);
+        
+    }
 </script>
 
 <fieldset>
