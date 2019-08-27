@@ -144,7 +144,11 @@ function radialChart(){
                         type: "GET", 
                         url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
                         success: function (response){
+
                             for(var x = 0; x < response[0].length; x ++){
+                                for(var y = 1; y < 6; y++){
+                                    document.getElementById("str-" + response[0][x] + "-" + y).innerHTML = "☆";
+                                }
                                 fillStarRec(response[0][x], response[1][x]);
                             }
                         }
@@ -160,6 +164,28 @@ function radialChart(){
 </script>
 
 <script type="text/javascript">
+        window.onload = function(){
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            $.ajax(
+            {
+            type: "GET", 
+            url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
+            success: function (response){
+
+                for(var x = 0; x < response[0].length; x ++){
+                    for(var y = 1; y < 6; y++){
+                        document.getElementById("str-" + response[0][x] + "-" + y).innerHTML = "☆";
+                    }
+                    fillStarRec(response[0][x], response[1][x]);
+                }
+            }
+            
+        }
+        );
+        }
         $(document).ready(function () {
 
             $('#butt').click(function () {

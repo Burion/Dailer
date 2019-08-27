@@ -73,5 +73,45 @@ namespace DailerApp.Services
             return marks.Where(m => m.CreationTime.Date == date.Date).ToList();
 
         }
+
+        public bool WasAlreadySetTodayByCurrentUser(Trait trait)
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = _userMananager.FindByIdAsync(userId).Result;
+            return WasAlreadySetTodayBy(user, trait);
+        }
+        public bool WasAlreadySetTodayBy(DailerUser user, Trait trait)
+        {
+            return GetTodaysMark(user, trait) != null;
+        }
+
+        public Mark GetTodaysMark(DailerUser user, Trait trait)
+        {
+            return _dbReader.GetAllItems().SingleOrDefault(m => m.User.Id == user.Id 
+            && m.CreationTime.Date == DateTime.Now.Date 
+            && m.Trait == trait);
+        }
+
+        public Mark GetTodaysMarkByCurrentUser(Trait trait)
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = _userMananager.FindByIdAsync(userId).Result;
+            return GetTodaysMark(user, trait);
+        }
+
+        public void ChangeMark(Mark mark, int value)
+        {
+            
+            _dbWriter.DeleteFromDb(mark);
+            _dbWriter.WriteToDb(
+                new Mark 
+                {
+                    Trait = mark.Trait,
+                    User = mark.User,
+                    CreationTime = DateTime.Now,
+                    Value = value
+                }
+            );
+        }
     }
 }

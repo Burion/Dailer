@@ -71,12 +71,21 @@ namespace DailerApp.Controllers
         [Route("setmark/{trait}/{mark}")]
         public IActionResult SetMark(string trait, string mark)
         {
+            var _trait = _traitService.GetTraitById(int.Parse(trait));
 
-            int traitId = int.Parse(trait);
-            _markManager.CreateMarkForCurrentUser(
-                _traitService.GetTraitById(traitId),
-                int.Parse(mark)
-            );
+            if(_markManager.WasAlreadySetTodayByCurrentUser(_trait))
+            {
+                var _mark = _markManager.GetTodaysMarkByCurrentUser(_trait);
+                _markManager.ChangeMark(_mark, int.Parse(mark));
+                
+            }
+            else
+            {
+                _markManager.CreateMarkForCurrentUser(
+                    _trait,
+                    int.Parse(mark)
+                );
+            }
             
             return GetString();
         }

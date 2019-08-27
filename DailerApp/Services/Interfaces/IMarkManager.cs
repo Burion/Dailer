@@ -12,8 +12,12 @@ namespace DailerApp.Services
         void DeleteAllMarks();
         Mark GetMark(int id);
         List<Mark> GetAllMarks();
-
+        bool WasAlreadySetTodayBy(DailerUser user, Trait trait);
+        bool WasAlreadySetTodayByCurrentUser(Trait trait);
         List<Mark> GetMarksByDate(DateTime date);
+        Mark GetTodaysMark(DailerUser user, Trait trat);
+        Mark GetTodaysMarkByCurrentUser(Trait trait);
+        void ChangeMark(Mark mark, int value);
         
     }
 }
