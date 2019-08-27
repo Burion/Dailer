@@ -17,6 +17,7 @@
     </div>
     
     <div style="display: flex; flex-direction: column; border: 1px solid black; border-radius: 15px;">
+        <p>Today's card</p>
         @foreach(var trait in Model.Traits)
         {
             
@@ -26,14 +27,19 @@
             <div class="container">
                 @for(int x = 1; x <= 5; x++)
                 {
-                <p onclick="setMark(@trait.Id, @x)">☆</p>
+                    
+                <p id="str-@trait.Id-@x" onclick="setMark(@trait.Id, @x)">☆</p>
+                
                 }
                 </div>
             <!--"★" : "☆"-->
             </div>
         }
+        <button style="margin: 10px" class="btn btn-primary" disabled title="Star all traits first!">Get reward!</button>
         </div>
 </div>
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
@@ -83,7 +89,8 @@ function radialChart(){
         options:{
             scale:{
                 ticks:{
-                    min: 0
+                 min: 0,
+                 suggestedMax: 1
                 }
             }
         }
@@ -167,6 +174,24 @@ function radialChart(){
     function setMarkAndUpdate(trait, mark){
         setMark(trait, mark);
         
+    }
+    function updateStars(){
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = mm + '/' + dd + '/' + yyyy;
+
+        $.ajax{
+            type: "POST", 
+            url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
+            success: function (response){
+                for(x = 0; x < response[0].length; x++){
+                    alert(response[0][x]);
+                }
+            }
+
+        }
     }
 </script>
 
