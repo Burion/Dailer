@@ -61,9 +61,17 @@ namespace DailerApp.Services
                 {
                     User = _userMananager.FindByIdAsync(userId).Result,
                     Trait = trait,
-                    Value = mark
+                    Value = mark,
+                    CreationTime = DateTime.Now
                 }
             );
+        }
+
+        public List<Mark> GetMarksByDate(DateTime date)
+        {
+            var marks = _dbReader.GetAllItems();
+            return marks.Where(m => m.CreationTime.Date == date.Date).ToList();
+
         }
     }
 }

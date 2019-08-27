@@ -135,6 +135,22 @@ function radialChart(){
                     });
                     radarChart.data.datasets[0].data = _data;
                     radarChart.update();
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yyyy = today.getFullYear();
+                    $.ajax(
+                        {
+                        type: "GET", 
+                        url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
+                        success: function (response){
+                            for(var x = 0; x < response[0].length; x ++){
+                                fillStarRec(response[0][x], response[1][x]);
+                            }
+                        }
+                        
+                    }
+                    );
                     }
                     });
         }
@@ -147,30 +163,37 @@ function radialChart(){
         $(document).ready(function () {
 
             $('#butt').click(function () {
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
                 $.ajax(
-                {
-                type: "POST",
-                url: '/setmark/' + 4 + "/" + 1,
-                success: function(response)
-                {
-                    $.ajax(
                     {
-                    type: "GET",
-                    url: '/getstring',
-                    success: function (response) {
-                        var _data = response[1].map(function(item) {
-                        return parseInt(item, 10);
-                    });
-                    radarChart.data.datasets[0].data = _data;
-                    radarChart.update();
+                    type: "GET", 
+                    url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
+                    success: function (response){
+                        for(var x = 0; x < response[0].length; x ++){
+                            fillStarRec(response[0][x], response[1][x]);
+                        }
                     }
-                    });
+                    
                 }
-                }); 
+                );
             });
         });
 </script>
 <script>
+    function fillStarRec(trait, value){
+        fillStar(trait, value);
+        var valueInt = parseInt(value, 10);
+        if(valueInt > 1){
+            fillStarRec(trait, valueInt - 1);
+        }
+    }
+    function fillStar(trait, value){
+        var star = document.getElementById("str-" + trait + "-" + value);
+        star.innerHTML = "★";
+    }
     function setMarkAndUpdate(trait, mark){
         setMark(trait, mark);
         
@@ -182,7 +205,7 @@ function radialChart(){
         var yyyy = today.getFullYear();
         today = mm + '/' + dd + '/' + yyyy;
 
-        $.ajax{
+        $.ajax({
             type: "POST", 
             url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
             success: function (response){
@@ -191,7 +214,7 @@ function radialChart(){
                 }
             }
 
-        }
+        });
     }
 </script>
 

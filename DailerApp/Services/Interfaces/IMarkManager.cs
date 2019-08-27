@@ -12,6 +12,8 @@ namespace DailerApp.Services
         void DeleteAllMarks();
         Mark GetMark(int id);
         List<Mark> GetAllMarks();
+
+        List<Mark> GetMarksByDate(DateTime date);
         
     }
 }

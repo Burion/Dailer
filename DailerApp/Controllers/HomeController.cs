@@ -86,6 +86,18 @@ namespace DailerApp.Controllers
             _markManager.DeleteAllMarks();
             return Ok();
         }
+        [Route("getmarks/{day}/{month}/{year}")]
+        public IActionResult GetMarks(string day, string month, string year){
+            DateTime date = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+            var marks = _markManager.GetMarksByDate(date);
+            string[][] responce = new string[2][];
+            string[] traitsIds = marks.Select(m => m.Trait.Id.ToString()).ToArray();
+            string[] marksToResp = marks.Select(m => m.Value.ToString()).ToArray();
+            responce[0] = traitsIds;
+            responce[1] = marksToResp;
+            return new JsonResult(responce);
+
+        }
         public IActionResult Privacy()
         {
             return View();
