@@ -7,7 +7,8 @@
     <link rel="stylesheet" type="text/css" href = "css/site.css">
 </head>
 <div class="text-center">
-    <h1>Welcome back, @Model.Title</h1>
+    <div>
+    </div>
     
 </div>
 
@@ -40,30 +41,86 @@
 </div>
 
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
-<script>
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+    <script>
     var radarChart;
-</script>
-<script language=javascript type="text/javascript">
+    window.onload = function(){
+        radialChart();
+        updateStars();
+    }
 
-function radialChart(){
-  $.ajax(
+
+    function fillStarRec(trait, value){
+        fillStar(trait, value);
+        var valueInt = parseInt(value, 10);
+        if(valueInt > 1){
+            fillStarRec(trait, valueInt - 1);
+        }
+    }
+    function fillStar(trait, value){
+        var star = document.getElementById("str-" + trait + "-" + value);
+        star.innerHTML = "★";
+    }
+    function updateStrs(traitIds, marks){
+        for(var x = 0; x < traitIds.length; x ++){
+            for(var y = 1; y < 6; y++){
+                document.getElementById("str-" + traitIds[x] + "-" + y).innerHTML = "☆";
+            }
+            fillStarRec(traitIds[x], marks[x]);
+            }
+    }
+    function updateStars(){
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = mm + '/' + dd + '/' + yyyy;
+        refreshStars(dd, mm, yyyy);
+    }
+    function refreshStars(dd, mm, yyyy){
+    $.ajax({
+        type: "POST", 
+        url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
+        success: function (response){
+            for(var x = 0; x < response[0].length; x ++){
+            for(var y = 1; y < 6; y++){
+                document.getElementById("str-" + response[0][x] + "-" + y).innerHTML = "☆";
+            }
+            fillStarRec(response[0][x], response[1][x]);
+            }
+        }
+        });
+    }
+    function updateChart(){
+        $.ajax(
+            {
+            type: "GET",
+            url: '/getstring',
+            success: function (response) {
+                var _data = response[1].map(function(item) {
+                return parseInt(item, 10);
+            });
+            radarChart.data.datasets[0].data = _data;
+            radarChart.update();
+            updateStrs(response[2], response[3]);
+            }
+            });
+    }
+    
+    function setMark(trait, mark)
     {
-        type: "GET",
-        url: '/getstring',
-        success: function (response) {
-            printChart(response);
-            //updateChart();
+    $.ajax(
+        {
+        type: "POST",
+        url: '/setmark/' + trait + "/" + mark, 
+        success: function(response){
+            updateChart();
+        }
+            
+    }); 
     }
-    });
-    }
-</script>
-<script>
-    radialChart();
-</script>
-<script>
     function printChart(_lb)
     {
         var marksCanvas = document.getElementById("marksChart");
@@ -94,157 +151,20 @@ function radialChart(){
                 }
             }
         }
-        });
-        
-
-        
+        });   
     }
-</script>
 
-<script>
-    function updateChart(){
-        $.ajax(
-        {
+    function radialChart(){
+    $.ajax(
+    {
         type: "GET",
         url: '/getstring',
         success: function (response) {
-            var _data = response[1].map(function(item) {
-            return parseInt(item, 10);
-        });
-        radarChart.data.datasets[0].data = _data;
-        }
-        });
-        radarChart.update();
+            printChart(response);
+            //updateChart();
+    }
+    });
     }
 </script>
-<script>
-    function setMark(trait, mark)
-    {
-       $.ajax(
-        {
-        type: "POST",
-        url: '/setmark/' + trait + "/" + mark, 
-        success: function(response){
-            $.ajax(
-                    {
-                    type: "GET",
-                    url: '/getstring',
-                    success: function (response) {
-                        var _data = response[1].map(function(item) {
-                        return parseInt(item, 10);
-                    });
-                    radarChart.data.datasets[0].data = _data;
-                    radarChart.update();
-                    var today = new Date();
-                    var dd = String(today.getDate()).padStart(2, '0');
-                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                    var yyyy = today.getFullYear();
-                    $.ajax(
-                        {
-                        type: "GET", 
-                        url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
-                        success: function (response){
-
-                            for(var x = 0; x < response[0].length; x ++){
-                                for(var y = 1; y < 6; y++){
-                                    document.getElementById("str-" + response[0][x] + "-" + y).innerHTML = "☆";
-                                }
-                                fillStarRec(response[0][x], response[1][x]);
-                            }
-                        }
-                        
-                    }
-                    );
-                    }
-                    });
-        }
-    }); 
-    }
-    
-</script>
-
-<script type="text/javascript">
-        window.onload = function(){
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            var yyyy = today.getFullYear();
-            $.ajax(
-            {
-            type: "GET", 
-            url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
-            success: function (response){
-
-                for(var x = 0; x < response[0].length; x ++){
-                    for(var y = 1; y < 6; y++){
-                        document.getElementById("str-" + response[0][x] + "-" + y).innerHTML = "☆";
-                    }
-                    fillStarRec(response[0][x], response[1][x]);
-                }
-            }
-            
-        }
-        );
-        }
-        $(document).ready(function () {
-
-            $('#butt').click(function () {
-                var today = new Date();
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                var yyyy = today.getFullYear();
-                $.ajax(
-                    {
-                    type: "GET", 
-                    url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
-                    success: function (response){
-                        for(var x = 0; x < response[0].length; x ++){
-                            fillStarRec(response[0][x], response[1][x]);
-                        }
-                    }
-                    
-                }
-                );
-            });
-        });
-</script>
-<script>
-    function fillStarRec(trait, value){
-        fillStar(trait, value);
-        var valueInt = parseInt(value, 10);
-        if(valueInt > 1){
-            fillStarRec(trait, valueInt - 1);
-        }
-    }
-    function fillStar(trait, value){
-        var star = document.getElementById("str-" + trait + "-" + value);
-        star.innerHTML = "★";
-    }
-    function setMarkAndUpdate(trait, mark){
-        setMark(trait, mark);
-        
-    }
-    function updateStars(){
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        today = mm + '/' + dd + '/' + yyyy;
-
-        $.ajax({
-            type: "POST", 
-            url: "/getmarks/" + dd + "/" + mm + "/" + yyyy,
-            success: function (response){
-                for(x = 0; x < response[0].length; x++){
-                    alert(response[0][x]);
-                }
-            }
-
-        });
-    }
-</script>
-
-<fieldset>
-     <input type="button" value="Demo 1" id="butt" />
-</fieldset>
+}
 

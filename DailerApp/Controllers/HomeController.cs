@@ -46,7 +46,7 @@ namespace DailerApp.Controllers
         [Route("getstring")]
         public IActionResult GetString()
         {
-            string[][] responce = new string[3][];            
+            string[][] responce = new string[4][];            
             var _thisMonthMarks = _traitService.GetAllTraits().GroupJoin(
                 _markManager.GetAllMarks(),
                 t => t,
@@ -65,7 +65,9 @@ namespace DailerApp.Controllers
 
             responce[0] = _thisMonthMarks.Select(m => m.Label).ToArray();
             responce[1] = _thisMonthMarks.Select(m => m.Mark.ToString()).ToArray();
-            responce[2] = _thisMonthMarks.Select(m => m.Mark.ToString()).ToArray();
+            var marks = GetMarks(DateTime.Now);
+            responce[2] = marks[0];
+            responce[3] = marks[1];
             return new JsonResult(responce);
         }
         [Route("setmark/{trait}/{mark}")]
@@ -105,6 +107,16 @@ namespace DailerApp.Controllers
             responce[0] = traitsIds;
             responce[1] = marksToResp;
             return new JsonResult(responce);
+
+        }
+        public string[][] GetMarks(DateTime date){
+            var marks = _markManager.GetMarksByDate(date);
+            string[][] responce = new string[2][];
+            string[] traitsIds = marks.Select(m => m.Trait.Id.ToString()).ToArray();
+            string[] marksToResp = marks.Select(m => m.Value.ToString()).ToArray();
+            responce[0] = traitsIds;
+            responce[1] = marksToResp;
+            return responce;
 
         }
         public IActionResult Privacy()
