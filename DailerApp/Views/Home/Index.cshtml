@@ -36,8 +36,9 @@
             <!--"★" : "☆"-->
             </div>
         }
-        <button style="margin: 10px" class="btn btn-primary" disabled title="Star all traits first!">Get reward!</button>
+        <button id="reward" style="margin: 10px" class="btn btn-primary" disabled title="Star all traits first!">Get reward!</button>
         </div>
+        <div id="loader" style="margin: 10px" class="loader" hidden></div>
 </div>
 
 
@@ -90,6 +91,7 @@
             }
             fillStarRec(response[0][x], response[1][x]);
             }
+            
         }
         });
     }
@@ -105,21 +107,26 @@
             radarChart.data.datasets[0].data = _data;
             radarChart.update();
             updateStrs(response[2], response[3]);
+            
             }
             });
     }
     
     function setMark(trait, mark)
     {
-    $.ajax(
-        {
-        type: "POST",
-        url: '/setmark/' + trait + "/" + mark, 
-        success: function(response){
-            updateChart();
-        }
-            
-    }); 
+        
+        document.getElementById("loader").hidden = false;
+        $.ajax(
+            {
+                type: "POST",
+                url: '/setmark/' + trait + "/" + mark, 
+                success: function(response){
+                    updateChart();
+                    
+                    document.getElementById("loader").hidden = true;
+                }                
+            }
+        ); 
     }
     function printChart(_lb)
     {
