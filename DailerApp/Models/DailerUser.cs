@@ -7,6 +7,6 @@ namespace DailerApp.Models
     public class DailerUser: IdentityUser
     {
         public string Login {get; set;}
-        
+        public int Expierence {get; set;}
     }
 }

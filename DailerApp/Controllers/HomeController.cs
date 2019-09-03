@@ -119,6 +119,12 @@ namespace DailerApp.Controllers
             return responce;
 
         }
+
+        public IActionResult AddNote(string text)
+        {
+            
+            return Ok();
+        }
         public IActionResult Privacy()
         {
             return View();
