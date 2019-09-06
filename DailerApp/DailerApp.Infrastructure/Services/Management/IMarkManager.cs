@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using DailerApp.Models;
 
-namespace DailerApp.Services
+namespace DailerApp.Infrastructure.Services
 {
     public interface IMarkManager
     {

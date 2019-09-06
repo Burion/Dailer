@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using DailerApp.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DailerApp.AppCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DailerApp.Data
 {
@@ -32,5 +34,7 @@ namespace DailerApp.Data
                 new Trait(){ Id = 8, Title = "Rest", Description = "You won't work hard if you don't play hard" }
             );
         }
+
+       
     }
 }

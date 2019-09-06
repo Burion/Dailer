@@ -2,12 +2,13 @@
 using DailerApp.Data;
 using DailerApp.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using DailerApp.AppCore.Services;
 
 namespace DailerApp.Services
 {
     public class DbHendler<T> : IDbHendler<T> where T : class
     {
-        public ApplicationDbContext _db { get; }
+        public DbContext _db { get; }
 
         public DbSet<T> dbSet { get; }
 

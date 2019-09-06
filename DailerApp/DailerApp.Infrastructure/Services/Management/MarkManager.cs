@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DailerApp.Models;
+using DailerApp.AppCore.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace DailerApp.Services
+
+
+namespace DailerApp.Infrastructure.Services
 {
     public class MarkManager : IMarkManager
     {

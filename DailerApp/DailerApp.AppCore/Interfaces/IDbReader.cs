@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DailerApp.Services
+namespace DailerApp.AppCore.Services
 {
     public interface IDbReader<T>: IDbHendler<T> where T: class
     {

@@ -1,7 +1,8 @@
 using System;
-using DailerApp.Data;
 
-namespace DailerApp.Services
+using DailerApp;
+
+namespace DailerApp.AppCore.Services
 {
     public interface IDbWriter<T>: IDbHendler<T> where T: class
     {

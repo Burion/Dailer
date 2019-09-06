@@ -1,12 +1,11 @@
 using System;
-using DailerApp.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace DailerApp.Services
+namespace DailerApp.AppCore.Services
 {
     public interface IDbHendler<T> where T: class
     {
-        ApplicationDbContext _db { get; }
+        DbContext _db { get; }
         DbSet<T> dbSet { get; }
     }
 }

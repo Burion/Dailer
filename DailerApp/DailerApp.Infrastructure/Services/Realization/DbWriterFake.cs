@@ -1,12 +1,13 @@
 using System;
 using DailerApp.Data;
 using Microsoft.EntityFrameworkCore;
+using DailerApp.AppCore.Services;
 
 namespace DailerApp.Services
 {
     public class DbWriterFake<T> : IDbWriter<T> where T: class
     {
-        public ApplicationDbContext _db => throw new NotImplementedException();
+        public DbContext _db => throw new NotImplementedException();
 
         public DbSet<T> dbSet => throw new NotImplementedException();
 

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using DailerApp.Models;
-namespace DailerApp.Services
+using DailerApp.Services;
+namespace DailerApp.AppCore.Services
 {
     public interface ITraitService
     {
         void CreateTrait(string title, string desc);
-        
         Trait GetTraitById(int id);
         void DeleteTrait(Trait trait);
         void DeleteTrait(int id);
