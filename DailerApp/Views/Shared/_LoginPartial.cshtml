@@ -8,7 +8,7 @@
     <li class="nav-item">
           @{var user = UserManager.FindByNameAsync(User.Identity.Name).Result; }
           <div> @user.Expierence</div>
-        <progress value="70" max="100">70 %</progress>
+        <progress value="@Model.Exp" max="100">70 %</progress>
     
           <img src="~/img/default.png" class="rounded-circle" width=30 alt="">
           <!--TODO find out how to pass model into _LoginPartial-->
