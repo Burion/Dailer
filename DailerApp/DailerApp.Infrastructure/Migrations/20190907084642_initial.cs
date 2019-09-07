@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DailerApp.Data.Migrations
+namespace Dailerapp.infrastructure.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,11 +39,27 @@ namespace DailerApp.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Login = table.Column<string>(nullable: true),
+                    Expierence = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Traits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Traits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,6 +168,74 @@ namespace DailerApp.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Marks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TraitId = table.Column<int>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    Value = table.Column<int>(nullable: false),
+                    DailerUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Marks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Marks_AspNetUsers_DailerUserId",
+                        column: x => x.DailerUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Marks_Traits_TraitId",
+                        column: x => x.TraitId,
+                        principalTable: "Traits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Traits",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[] { 1, "Take care of it", "Family" });
+
+            migrationBuilder.InsertData(
+                table: "Traits",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[] { 2, "Spend time with them", "Friends" });
+
+            migrationBuilder.InsertData(
+                table: "Traits",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[] { 3, "Don't lost it", "Health" });
+
+            migrationBuilder.InsertData(
+                table: "Traits",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[] { 4, "It's your personal antidepressant", "Hobby" });
+
+            migrationBuilder.InsertData(
+                table: "Traits",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[] { 5, "You are not snowflake", "Self-improvement" });
+
+            migrationBuilder.InsertData(
+                table: "Traits",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[] { 6, "I bet you don't want to be cleaner at your middle age", "Carreer" });
+
+            migrationBuilder.InsertData(
+                table: "Traits",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[] { 7, "Whatever you would say, it's material world", "Money" });
+
+            migrationBuilder.InsertData(
+                table: "Traits",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[] { 8, "You won't work hard if you don't play hard", "Rest" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -188,6 +272,16 @@ namespace DailerApp.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Marks_DailerUserId",
+                table: "Marks",
+                column: "DailerUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Marks_TraitId",
+                table: "Marks",
+                column: "TraitId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -208,10 +302,16 @@ namespace DailerApp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Marks");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Traits");
         }
     }
 }

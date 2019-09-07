@@ -24,11 +24,14 @@ namespace DailerApp.Infrastructure.Services
             _userMananager = userManager;
             _httpContextAccessor = httpContextAccessor;
         }
-        public void CreateMark(DailerUser user, Trait trait)
+        public void CreateMark(string userId, Trait trait)
         {
-            _dbWriter.WriteToDb(
-                new Mark() { User = user, Trait = trait }
-            );
+            var user = _userMananager.FindByIdAsync(userId).Result;
+            var mark = new Mark() { Trait = trait };
+            _dbWriter.WriteToDb(mark);
+            user.Marks.Add(mark);
+            
+            
         }
 
         public void DeleteAllMarks()
@@ -51,7 +54,7 @@ namespace DailerApp.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public void CreateMark(DailerUser user, Trait trait, int mark)
+        public void CreateMark(string userId, Trait trait, int mark)
         {
             throw new NotImplementedException();
         }
@@ -59,15 +62,18 @@ namespace DailerApp.Infrastructure.Services
         public void CreateMarkForCurrentUser(Trait trait, int mark)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            _dbWriter.WriteToDb(
-                new Mark()
+            
+            var _mark = new Mark()
                 {
-                    User = _userMananager.FindByIdAsync(userId).Result,
                     Trait = trait,
                     Value = mark,
                     CreationTime = DateTime.Now
-                }
+                };
+
+            _dbWriter.WriteToDb(
+                _mark
             );
+            _userMananager.FindByIdAsync(userId).Result.Marks.Add(_mark);
         }
 
         public List<Mark> GetMarksByDate(DateTime date)
@@ -80,41 +86,41 @@ namespace DailerApp.Infrastructure.Services
         public bool WasAlreadySetTodayByCurrentUser(Trait trait)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = _userMananager.FindByIdAsync(userId).Result;
-            return WasAlreadySetTodayBy(user, trait);
+            
+            return WasAlreadySetTodayBy(userId, trait);
         }
-        public bool WasAlreadySetTodayBy(DailerUser user, Trait trait)
+        public bool WasAlreadySetTodayBy(string userId, Trait trait)
         {
-            return GetTodaysMark(user, trait) != null;
+            var user = _userMananager.FindByIdAsync(userId).Result;
+            return GetTodaysMark(user.Id, trait) != null;
         }
 
-        public Mark GetTodaysMark(DailerUser user, Trait trait)
+        public Mark GetTodaysMark(string userId, Trait trait)
         {
-            return _dbReader.GetAllItems().SingleOrDefault(m => m.User.Id == user.Id 
-            && m.CreationTime.Date == DateTime.Now.Date 
+            var user = _userMananager.FindByIdAsync(userId).Result;
+            return user.Marks.SingleOrDefault(m => m.CreationTime.Date == DateTime.Now.Date 
             && m.Trait == trait);
         }
 
         public Mark GetTodaysMarkByCurrentUser(Trait trait)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = _userMananager.FindByIdAsync(userId).Result;
-            return GetTodaysMark(user, trait);
+            return GetTodaysMark(userId, trait);
         }
 
         public void ChangeMark(Mark mark, int value)
         {
-            
-            _dbWriter.DeleteFromDb(mark);
-            _dbWriter.WriteToDb(
-                new Mark 
-                {
-                    Trait = mark.Trait,
-                    User = mark.User,
-                    CreationTime = DateTime.Now,
-                    Value = value
-                }
-            );
+            throw new NotImplementedException();
+            // _dbWriter.DeleteFromDb(mark);
+            // _dbWriter.WriteToDb(
+            //     new Mark 
+            //     {
+            //         Trait = mark.Trait,
+            //         //User = mark.User,
+            //         CreationTime = DateTime.Now,
+            //         Value = value
+            //     }
+            // );
         }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using DailerApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DailerApp.Data.Migrations
+namespace Dailerapp.infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190907084642_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,17 +79,17 @@ namespace DailerApp.Data.Migrations
 
                     b.Property<DateTime>("CreationTime");
 
-                    b.Property<int?>("TraitId");
+                    b.Property<string>("DailerUserId");
 
-                    b.Property<string>("UserId");
+                    b.Property<int?>("TraitId");
 
                     b.Property<int>("Value");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TraitId");
+                    b.HasIndex("DailerUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TraitId");
 
                     b.ToTable("Marks");
                 });
@@ -269,13 +271,13 @@ namespace DailerApp.Data.Migrations
 
             modelBuilder.Entity("DailerApp.Models.Mark", b =>
                 {
+                    b.HasOne("DailerApp.Models.DailerUser")
+                        .WithMany("Marks")
+                        .HasForeignKey("DailerUserId");
+
                     b.HasOne("DailerApp.Models.Trait", "Trait")
                         .WithMany()
                         .HasForeignKey("TraitId");
-
-                    b.HasOne("DailerApp.Models.DailerUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
