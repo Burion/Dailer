@@ -24,12 +24,13 @@ namespace DailerApp.Infrastructure.Services
             _userMananager = userManager;
             _httpContextAccessor = httpContextAccessor;
         }
-        public void CreateMark(string userId, Trait trait)
+        public async void CreateMark(string userId, Trait trait)
         {
             var user = _userMananager.FindByIdAsync(userId).Result;
             var mark = new Mark() { Trait = trait };
             _dbWriter.WriteToDb(mark);
             user.Marks.Add(mark);
+            await _userMananager.UpdateAsync(user);
             
             
         }
@@ -56,24 +57,17 @@ namespace DailerApp.Infrastructure.Services
 
         public void CreateMark(string userId, Trait trait, int mark)
         {
-            throw new NotImplementedException();
+            var _mark = new Mark() { Trait = trait, Value = mark, CreationTime = DateTime.Now };
+            _dbWriter.WriteToDb(_mark);
+            var user = _userMananager.FindByIdAsync(userId).Result;
+            user.Marks.Add(_mark);
+            _userMananager.UpdateAsync(user);
         }
 
         public void CreateMarkForCurrentUser(Trait trait, int mark)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            
-            var _mark = new Mark()
-                {
-                    Trait = trait,
-                    Value = mark,
-                    CreationTime = DateTime.Now
-                };
-
-            _dbWriter.WriteToDb(
-                _mark
-            );
-            _userMananager.FindByIdAsync(userId).Result.Marks.Add(_mark);
+            CreateMark(userId, trait, mark);
         }
 
         public List<Mark> GetMarksByDate(DateTime date)
@@ -110,17 +104,15 @@ namespace DailerApp.Infrastructure.Services
 
         public void ChangeMark(Mark mark, int value)
         {
-            throw new NotImplementedException();
-            // _dbWriter.DeleteFromDb(mark);
-            // _dbWriter.WriteToDb(
-            //     new Mark 
-            //     {
-            //         Trait = mark.Trait,
-            //         //User = mark.User,
-            //         CreationTime = DateTime.Now,
-            //         Value = value
-            //     }
-            // );
+            var user = _userMananager.Users.SingleOrDefault(u => u.Marks.Contains(mark));
+            var _mark = new Mark 
+                {
+                    Trait = mark.Trait,
+                    CreationTime = DateTime.Now,
+                    Value = value
+                };
+            _dbWriter.DeleteFromDb(mark);
+            CreateMark(user.Id, mark.Trait);
         }
     }
 }
