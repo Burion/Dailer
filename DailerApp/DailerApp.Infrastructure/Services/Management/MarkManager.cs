@@ -104,15 +104,9 @@ namespace DailerApp.Infrastructure.Services
 
         public void ChangeMark(Mark mark, int value)
         {
-            var user = _userMananager.Users.SingleOrDefault(u => u.Marks.Contains(mark));
-            var _mark = new Mark 
-                {
-                    Trait = mark.Trait,
-                    CreationTime = DateTime.Now,
-                    Value = value
-                };
-            _dbWriter.DeleteFromDb(mark);
-            CreateMark(user.Id, mark.Trait);
+            //var user = _userMananager.Users.SingleOrDefault(u => u.Marks.Contains(mark));
+            mark.Value = value;
+            _dbWriter.SaveChanges();
         }
     }
 }

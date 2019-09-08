@@ -21,6 +21,11 @@ namespace DailerApp.Services
             throw new NotImplementedException();
         }
 
+        public void SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
         public void WriteToDb(T item)
         {
             Console.WriteLine($"Written type was: {typeof(T)}");

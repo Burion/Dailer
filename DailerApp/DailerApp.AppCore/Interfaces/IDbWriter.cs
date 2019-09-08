@@ -9,6 +9,7 @@ namespace DailerApp.AppCore.Services
         void WriteToDb(T item);
         void DeleteFromDb(T item);
         void DeleteAllFromDb();
+        void SaveChanges();
         
     }
 }

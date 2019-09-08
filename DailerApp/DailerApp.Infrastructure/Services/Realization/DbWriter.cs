@@ -37,5 +37,9 @@ namespace DailerApp.Services
             _db.SaveChanges();
             Console.WriteLine($"Written type was: {typeof(T)}");
         }
+        public void SaveChanges()
+        {
+            _db.SaveChanges();
+        }
     }
 }
