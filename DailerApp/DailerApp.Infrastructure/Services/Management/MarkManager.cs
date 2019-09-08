@@ -39,6 +39,7 @@ namespace DailerApp.Infrastructure.Services
         {
             _dbWriter.DeleteAllFromDb();
         }
+        
 
         public void DeleteMark(Mark mark)
         {
@@ -48,6 +49,16 @@ namespace DailerApp.Infrastructure.Services
         public List<Mark> GetAllMarks()
         {
             return _dbReader.GetAllItems();
+        }
+        public List<Mark> GetAllUserMarks(string userId)
+        {
+            var user = _userMananager.FindByIdAsync(userId).Result;
+            return user.Marks;
+        }
+        public List<Mark> GetAllCurrentUserMarks()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return GetAllUserMarks(userId);
         }
 
         public Mark GetMark(int id)

@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using DailerApp.AppCore.Services;
 using DailerApp.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -37,6 +38,7 @@ namespace DailerApp.Controllers
             _markManager = markManager;
             _random = random;
         }
+        [Authorize]
         public IActionResult Index()
         {
             var Model = new IndexModel()
@@ -52,7 +54,7 @@ namespace DailerApp.Controllers
         {
             string[][] responce = new string[4][];            
             var _thisMonthMarks = _traitService.GetAllTraits().GroupJoin(
-                _markManager.GetAllMarks(),
+                _markManager.GetAllCurrentUserMarks(),
                 t => t,
                 m => m.Trait,
                 (trait, mrks) => new
@@ -102,22 +104,20 @@ namespace DailerApp.Controllers
             return Ok();
         }
         [Route("getmarks/{day}/{month}/{year}")]
-        public IActionResult GetMarks(string day, string month, string year){
+        public IActionResult GetMarks(string day, string month, string year)
+        {
             DateTime date = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
-            var marks = _markManager.GetMarksByDate(date);
-            string[][] responce = new string[2][];
-            string[] traitsIds = marks.Select(m => m.Trait.Id.ToString()).ToArray();
-            string[] marksToResp = marks.Select(m => m.Value.ToString()).ToArray();
-            responce[0] = traitsIds;
-            responce[1] = marksToResp;
-            return new JsonResult(responce);
+            return new JsonResult(GetMarks(date));
 
         }
         public string[][] GetMarks(DateTime date){
             var marks = _markManager.GetMarksByDate(date);
+            var currentUsersMarks = _markManager.GetAllCurrentUserMarks();
+            var _marks = marks.Intersect(currentUsersMarks);
+            //TODO add new overloaded methods to Mark Manager
             string[][] responce = new string[2][];
-            string[] traitsIds = marks.Select(m => m.Trait.Id.ToString()).ToArray();
-            string[] marksToResp = marks.Select(m => m.Value.ToString()).ToArray();
+            string[] traitsIds = _marks.Select(m => m.Trait.Id.ToString()).ToArray();
+            string[] marksToResp = _marks.Select(m => m.Value.ToString()).ToArray();
             responce[0] = traitsIds;
             responce[1] = marksToResp;
             return responce;

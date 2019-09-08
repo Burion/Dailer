@@ -12,6 +12,8 @@ namespace DailerApp.Infrastructure.Services
         void DeleteAllMarks();
         Mark GetMark(int id);
         List<Mark> GetAllMarks();
+        List<Mark> GetAllUserMarks(string userId);
+        List<Mark> GetAllCurrentUserMarks();
         bool WasAlreadySetTodayBy(string userId, Trait trait);
         bool WasAlreadySetTodayByCurrentUser(Trait trait);
         List<Mark> GetMarksByDate(DateTime date);
