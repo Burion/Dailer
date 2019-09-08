@@ -12,7 +12,7 @@ namespace DailerApp.Infrastructure.Services
 
         public ExperienceManager(UserManager<DailerUser> userManager)
         {
-            _userManager = userManager;
+           _userManager = userManager;
         }
         public void AddExperience(string userId, int exp)
         {
