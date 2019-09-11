@@ -126,8 +126,8 @@ namespace DailerApp.Controllers
 
         public IActionResult AddNote(string text)
         {
-            
-            return Ok();
+            throw new NotImplementedException();
+            //return Ok();
         }
         public IActionResult Privacy()
         {

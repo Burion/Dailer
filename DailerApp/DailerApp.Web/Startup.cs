@@ -44,6 +44,7 @@ namespace DailerApp
             services.AddScoped<Random, Random>();
             services.AddScoped<ITraitService, TraitService>();
             services.AddScoped<IMarkManager, MarkManager>();
+            services.AddScoped<IHttpContextHendler, HttpContextHendler>();
             services.AddScoped(typeof(IDbWriter<>), typeof(DbWriter<>));
             services.AddScoped(typeof(IDbReader<>), typeof(DbReader<>));
             services.AddDbContext<ApplicationDbContext>(options =>
