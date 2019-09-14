@@ -62,5 +62,24 @@ namespace DailerApp.Services
             var note = _dbReader.dbSet.SingleOrDefault(n => n.Date.Date == DateTime.Now.Date); //TODO refactore exception
             return note;
         }
+
+        public void UpdateNote(int noteId, string text)
+        {
+            var oldNote = _dbReader.GetById(noteId);
+            oldNote.Text = text;
+            _dbWriter.SaveChanges();
+        }
+
+        public void UpdateCurrentUsersTodayNote(string text)
+        {
+            var note = GetTodaysCurrentUserNote();
+            note.Text = text;
+            _dbWriter.SaveChanges();
+        }
+        public void ClearAllNotes()
+        {
+            _dbWriter.DeleteAllFromDb();
+        }
+        //TODO dbWriter SaveChanges() - not its concesn
     }
 }

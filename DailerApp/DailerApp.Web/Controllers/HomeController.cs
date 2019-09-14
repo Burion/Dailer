@@ -130,7 +130,16 @@ namespace DailerApp.Controllers
         [Route("createnote")]
         public IActionResult AddNote(string text)
         {
-            _noteManager.CreateNoteForCurrentUser(text);
+            if(_noteManager.GetTodaysCurrentUserNote() == null)
+                _noteManager.CreateNoteForCurrentUser(text);
+            else
+                _noteManager.UpdateCurrentUsersTodayNote(text);
+            return Ok();
+        }
+        [Route("clearnotes")]
+        public IActionResult ClearAllNotes()
+        {
+            _noteManager.ClearAllNotes();
             return Ok();
         }
         public IActionResult Privacy()

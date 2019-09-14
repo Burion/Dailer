@@ -41,7 +41,12 @@
         <div id="loader" style="margin: 10px" class="loader" hidden></div>
         
 </div>
-<h1 onclick="createNote('this is todays note')">Hit me</h1>
+
+<form>
+    <textarea id="note" class="form-control" onkeyup="setNoteButton(true)">@Model.Note</textarea>
+    
+</form>
+<button id="notebutton" style="margin-top: 10px" class="btn btn-primary" onclick="createNoteFromBody()" disabled>Save</button>
 
 
 @section Scripts {
@@ -174,7 +179,7 @@
     }
     });
     }
-
+    
     function createNote(_text){
     $.ajax(
         {
@@ -184,10 +189,20 @@
                 text: _text
             },
             success: function(response) {
-                alert("wow")
+                
             }
         }
     )
+    }
+    function createNoteFromBody(){
+        var txt = document.getElementById('note').value
+
+        createNote(txt)
+    }
+
+    function setNoteButton(bool)
+    {
+        document.getElementById('notebutton').disabled = !bool
     }
 </script>
 }

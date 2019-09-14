@@ -11,6 +11,11 @@ namespace DailerApp.Services
         Note FindNoteByUserDate (DateTime date, string userId);
         Note GetTodaysCurrentUserNote();
 
+        void UpdateNote(int noteId, string text);
+        void UpdateCurrentUsersTodayNote(string text);
+        void ClearAllNotes();
+
+
         
     }
 }
