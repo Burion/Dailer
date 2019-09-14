@@ -6,6 +6,7 @@ using DailerApp.AppCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DailerApp.AppCore.Models;
 
 namespace DailerApp.Data
 {
@@ -14,7 +15,7 @@ namespace DailerApp.Data
 
         public DbSet<Trait> Traits {get; set;}
         public DbSet<Mark> Marks {get; set;}
-        
+        public DbSet<Note> Notes {get;set;}
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -31,12 +31,14 @@ namespace DailerApp.Controllers
     {
         readonly ITraitService _traitService;
         readonly IMarkManager _markManager;
+        INoteManager _noteManager {get;}
         readonly Random _random;
-        public HomeController(ITraitService traitService, IMarkManager markManager, Random random)
+        public HomeController(ITraitService traitService, IMarkManager markManager, Random random, INoteManager noteManager)
         {
             _traitService = traitService;
             _markManager = markManager;
             _random = random;
+            _noteManager = noteManager;
         }
         [Authorize]
         public IActionResult Index()
@@ -44,7 +46,8 @@ namespace DailerApp.Controllers
             var Model = new IndexModel()
             {
                 Title = "Hello",
-                Traits = _traitService.GetAllTraits().ToList()
+                Traits = _traitService.GetAllTraits().ToList(),
+                Note = _noteManager.GetTodaysCurrentUserNote()
             };
             return View(Model);
         }

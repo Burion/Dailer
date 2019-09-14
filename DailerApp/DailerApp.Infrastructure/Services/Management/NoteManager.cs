@@ -6,6 +6,7 @@ using DailerApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
 using DailerApp.AppCore.Services;
 using DailerApp.AppCore.Models;
+using System.Linq;
 
 namespace DailerApp.Services
 {
@@ -44,6 +45,24 @@ namespace DailerApp.Services
         public void DeleteNote(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public Note FindNoteById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Note FindNoteByUserDate(DateTime date, string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Note GetTodaysCurrentUserNote()
+        {
+            var note = _dbReader.dbSet.SingleOrDefault(n => n.Date.Date == DateTime.Now.Date);
+            if(note == null)
+                throw new Exception(); //TODO refactore exception
+            return note;
         }
     }
 }
