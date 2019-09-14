@@ -14,9 +14,9 @@ namespace DailerApp.Services
     {
         UserManager<DailerUser> _userManager {get;}
         public IHttpContextHendler _httpContextHendler {get;}
-        DbReader<Note> _dbReader {get;}
-        DbWriter<Note> _dbWriter {get;}
-        public NoteManager(UserManager<DailerUser> userManager, IHttpContextHendler httpContextHendler, DbReader<Note> dbReader, DbWriter<Note> dbWriter)
+        IDbReader<Note> _dbReader {get;}
+        IDbWriter<Note> _dbWriter {get;}
+        public NoteManager(UserManager<DailerUser> userManager, IHttpContextHendler httpContextHendler, IDbReader<Note> dbReader, IDbWriter<Note> dbWriter)
         {
             _userManager = userManager;
             _httpContextHendler = httpContextHendler;
@@ -59,9 +59,7 @@ namespace DailerApp.Services
 
         public Note GetTodaysCurrentUserNote()
         {
-            var note = _dbReader.dbSet.SingleOrDefault(n => n.Date.Date == DateTime.Now.Date);
-            if(note == null)
-                throw new Exception(); //TODO refactore exception
+            var note = _dbReader.dbSet.SingleOrDefault(n => n.Date.Date == DateTime.Now.Date); //TODO refactore exception
             return note;
         }
     }

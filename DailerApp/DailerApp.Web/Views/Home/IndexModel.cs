@@ -10,6 +10,6 @@ namespace DailerApp.Models
         public string Title {get; set;}
         public List<Trait> Traits { get; set; }
         public int[] Data {get; set;} 
-        public Note Note {get; set;}
+        public string Note {get; set;}
     }
 }

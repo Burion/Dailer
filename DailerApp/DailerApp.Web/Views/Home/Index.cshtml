@@ -39,7 +39,9 @@
         <button id="reward" style="margin: 10px" class="btn btn-primary" disabled title="Star all traits first!">Get reward!</button>
         </div>
         <div id="loader" style="margin: 10px" class="loader" hidden></div>
+        
 </div>
+<h1 onclick="createNote('this is todays note')">Hit me</h1>
 
 
 @section Scripts {
@@ -171,6 +173,21 @@
             //updateChart();
     }
     });
+    }
+
+    function createNote(_text){
+    $.ajax(
+        {
+            type: "POST",
+            url: "/createnote",
+            data: {
+                text: _text
+            },
+            success: function(response) {
+                alert("wow")
+            }
+        }
+    )
     }
 </script>
 }

@@ -43,11 +43,12 @@ namespace DailerApp.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            var note = _noteManager.GetTodaysCurrentUserNote();
             var Model = new IndexModel()
             {
                 Title = "Hello",
                 Traits = _traitService.GetAllTraits().ToList(),
-                Note = _noteManager.GetTodaysCurrentUserNote()
+                Note = note != null ? note.Text : ""
             };
             return View(Model);
         }
@@ -126,11 +127,11 @@ namespace DailerApp.Controllers
             return responce;
 
         }
-
+        [Route("createnote")]
         public IActionResult AddNote(string text)
         {
-            throw new NotImplementedException();
-            //return Ok();
+            _noteManager.CreateNoteForCurrentUser(text);
+            return Ok();
         }
         public IActionResult Privacy()
         {
