@@ -1,5 +1,6 @@
 
 
+using DailerApp.AppCore.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 namespace DailerApp.Models
@@ -9,5 +10,6 @@ namespace DailerApp.Models
         public string Login {get; set;}
         public int Expierence {get; set;}
         public virtual List<Mark> Marks { get; set; }
+        public virtual List<Note> Notes {get;set;}
     }
 }

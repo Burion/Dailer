@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using DailerApp.AppCore.Services;
 using DailerApp.AppCore.Models;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DailerApp.Services
 {
@@ -26,14 +27,16 @@ namespace DailerApp.Services
         public void CreateNote(string text, string userId)
         {
             
-            _userManager.FindByIdAsync(userId);
+            var user = _userManager.FindByIdAsync(userId).Result;
             Note note = new Note()
             {
                 Text = text,
                 Date = DateTime.Now
                 
             };
+            user.Notes.Add(note);
             _dbWriter.WriteToDb(note);
+            //TODO flag point (fix if necessary )
         }
 
         public void CreateNoteForCurrentUser(string text)
@@ -79,6 +82,12 @@ namespace DailerApp.Services
         public void ClearAllNotes()
         {
             _dbWriter.DeleteAllFromDb();
+        }
+
+        public List<Note> GetUserNotes(string userId)
+        {
+            var user = _userManager.FindByIdAsync(userId).Result;
+            return user.Notes;
         }
         //TODO dbWriter SaveChanges() - not its concesn
     }

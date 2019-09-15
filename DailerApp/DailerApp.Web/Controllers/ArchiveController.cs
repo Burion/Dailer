@@ -14,8 +14,7 @@ using Newtonsoft.Json;
 using DailerApp.AppCore.Services;
 using DailerApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
-
-
+using Microsoft.AspNetCore.Identity;
 
 namespace DailerApp.Controllers
 {
@@ -23,16 +22,24 @@ namespace DailerApp.Controllers
     {
         INoteManager _noteManager {get;}
         IMarkManager _markManager {get;}
-
-        public ArchiveController(INoteManager noteManager, IMarkManager markManager)
+        IHttpContextHendler _httpContextHendler {get;}
+        UserManager<DailerUser> _userManager {get;}
+        public ArchiveController(INoteManager noteManager, IMarkManager markManager, IHttpContextHendler httpContextHendler, UserManager<DailerUser> userManager)
         {
             _noteManager = noteManager;
             _markManager = markManager;
+            _httpContextHendler = httpContextHendler;
         }
 
         public IActionResult ArchivePage()
         {
-            return View();
+            var id = _httpContextHendler.GetCurrrentUserId();
+            
+            ArchivePageModel model = new ArchivePageModel()
+            {
+                Notes = _noteManager.GetUserNotes(id)
+            };
+            return View(model);
         }
     }
 }
