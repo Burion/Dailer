@@ -39,6 +39,7 @@ namespace DailerApp.Controllers
             {
                 Notes = _noteManager.GetUserNotes(id)
             };
+            
             return View(model);
         }
     }

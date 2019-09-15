@@ -21,11 +21,15 @@ namespace Dailerapp.infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("DailerUserId");
+
                     b.Property<DateTime>("Date");
 
                     b.Property<string>("Text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DailerUserId");
 
                     b.ToTable("Notes");
                 });
@@ -279,6 +283,13 @@ namespace Dailerapp.infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("DailerApp.AppCore.Models.Note", b =>
+                {
+                    b.HasOne("DailerApp.Models.DailerUser")
+                        .WithMany("Notes")
+                        .HasForeignKey("DailerUserId");
                 });
 
             modelBuilder.Entity("DailerApp.Models.Mark", b =>

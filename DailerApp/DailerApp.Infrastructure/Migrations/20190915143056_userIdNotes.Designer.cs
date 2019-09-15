@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dailerapp.infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190914125810_notesmig")]
-    partial class notesmig
+    [Migration("20190915143056_userIdNotes")]
+    partial class userIdNotes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,11 +23,15 @@ namespace Dailerapp.infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("DailerUserId");
+
                     b.Property<DateTime>("Date");
 
                     b.Property<string>("Text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DailerUserId");
 
                     b.ToTable("Notes");
                 });
@@ -281,6 +285,13 @@ namespace Dailerapp.infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("DailerApp.AppCore.Models.Note", b =>
+                {
+                    b.HasOne("DailerApp.Models.DailerUser")
+                        .WithMany("Notes")
+                        .HasForeignKey("DailerUserId");
                 });
 
             modelBuilder.Entity("DailerApp.Models.Mark", b =>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Dailerapp.infrastructure.Migrations
 {
-    public partial class initial : Migration
+    public partial class userIdNotes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -169,6 +169,27 @@ namespace Dailerapp.infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Text = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    DailerUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notes_AspNetUsers_DailerUserId",
+                        column: x => x.DailerUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Marks",
                 columns: table => new
                 {
@@ -282,6 +303,11 @@ namespace Dailerapp.infrastructure.Migrations
                 name: "IX_Marks_TraitId",
                 table: "Marks",
                 column: "TraitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notes_DailerUserId",
+                table: "Notes",
+                column: "DailerUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -305,13 +331,16 @@ namespace Dailerapp.infrastructure.Migrations
                 name: "Marks");
 
             migrationBuilder.DropTable(
+                name: "Notes");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Traits");
 
             migrationBuilder.DropTable(
-                name: "Traits");
+                name: "AspNetUsers");
         }
     }
 }

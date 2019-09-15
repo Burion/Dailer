@@ -46,7 +46,10 @@
     <textarea id="note" class="form-control" onkeyup="setNoteButton(true)">@Model.Note</textarea>
     
 </form>
+<div style="display: flex; flex-direction: row;">
 <button id="notebutton" style="margin-top: 10px" class="btn btn-primary" onclick="createNoteFromBody()" disabled>Save</button>
+<div id="buttonloader" style="margin: 10px" class="loader" hidden></div>
+</div>
 
 
 @section Scripts {
@@ -181,6 +184,7 @@
     }
     
     function createNote(_text){
+    document.getElementById("buttonloader").hidden = false
     $.ajax(
         {
             type: "POST",
@@ -189,14 +193,14 @@
                 text: _text
             },
             success: function(response) {
-                
+                setNoteButton(false)
+                document.getElementById("buttonloader").hidden = true
             }
         }
     )
     }
     function createNoteFromBody(){
         var txt = document.getElementById('note').value
-
         createNote(txt)
     }
 
