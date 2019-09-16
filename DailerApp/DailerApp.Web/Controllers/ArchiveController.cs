@@ -37,7 +37,7 @@ namespace DailerApp.Controllers
             
             ArchivePageModel model = new ArchivePageModel()
             {
-                Notes = _noteManager.GetUserNotes(id)
+                Notes = _noteManager.GetUserNotes(id).OrderByDescending(n => n.Date).ToList()
             };
             
             return View(model);
